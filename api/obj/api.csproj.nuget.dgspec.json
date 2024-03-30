@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {}
+    "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {
+    "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
+        "projectUniqueName": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
+        "projectPath": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
         "packagesPath": "C:\\Users\\qwerty\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\obj\\",
+        "outputPath": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -25,8 +25,6 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,6 +51,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
