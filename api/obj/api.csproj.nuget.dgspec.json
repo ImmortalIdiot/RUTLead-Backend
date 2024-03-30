@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {}
+    "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {}
   },
   "projects": {
-    "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {
+    "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
+        "projectPath": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\api.csproj",
         "packagesPath": "C:\\Users\\qwerty\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\obj\\",
+        "outputPath": "C:\\Users\\qwerty\\VSCProjects\\RUTLead-Backend\\api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -25,6 +25,8 @@
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -51,6 +53,22 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
