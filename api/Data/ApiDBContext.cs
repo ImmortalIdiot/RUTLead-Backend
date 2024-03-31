@@ -14,5 +14,5 @@ public class ApiDBContext : DbContext
         
     }
     
-    public DbSet<Student> Student { get; set; }
+    public DbSet<Student> Students { get; set; }
 }
