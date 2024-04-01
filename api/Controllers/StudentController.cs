@@ -15,14 +15,15 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
-            var students = _context.Students.ToList();
+            var students = _context.Students.ToList()
+            .Select(s => s.ToStudentDto());
+
             return Ok(students);
         }
 
         [HttpGet("{id}")]
-
         public IActionResult GetById([FromRoute] int id)
         {
             var student = _context.Students.Find(id);
@@ -32,7 +33,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            return Ok(student);
+            return Ok(student.ToStudentDto());
         }
     }
 }
