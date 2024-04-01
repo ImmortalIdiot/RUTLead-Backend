@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -39,10 +40,31 @@ namespace api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CreateStudentRequest studentDto)
         {
-            var studentModel = studentDto.ToStudentFromCreateDTO();
+            var studentModel = studentDto.ToStudentFromCreate();
             _context.Students.Add(studentModel);
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new {id = studentModel.StudentId}, studentModel.ToStudentDto());
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateStudentRequestDto updateDto)
+        {
+            var studentModel = _context.Students.FirstOrDefault(x => x.StudentId == id);
+
+            if (studentModel == null)
+            {
+                return NotFound();
+            }
+            studentModel.StudentId = updateDto.StudentId;
+            studentModel.FullName = updateDto.FullName;
+            studentModel.Email = updateDto.Email;
+            studentModel.Group = updateDto.Group;
+            studentModel.Password = updateDto.Password;
+
+            _context.SaveChanges();
+
+            return Ok(studentModel.ToStudentDto());
         }
     }
 }
