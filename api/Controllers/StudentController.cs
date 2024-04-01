@@ -35,5 +35,14 @@ namespace api.Controllers
 
             return Ok(student.ToStudentDto());
         }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateStudentRequest studentDto)
+        {
+            var studentModel = studentDto.ToStudentFromCreateDTO();
+            _context.Students.Add(studentModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = studentModel.StudentId}, studentModel.ToStudentDto());
+        }
     }
 }
