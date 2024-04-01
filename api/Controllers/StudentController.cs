@@ -50,12 +50,13 @@ namespace api.Controllers
         [Route("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] UpdateStudentRequestDto updateDto)
         {
-            var studentModel = _context.Students.FirstOrDefault(x => x.StudentId == id);
+            var studentModel = _context.Students.FirstOrDefault(s => s.StudentId == id);
 
             if (studentModel == null)
             {
                 return NotFound();
             }
+
             studentModel.StudentId = updateDto.StudentId;
             studentModel.FullName = updateDto.FullName;
             studentModel.Email = updateDto.Email;
@@ -65,6 +66,24 @@ namespace api.Controllers
             _context.SaveChanges();
 
             return Ok(studentModel.ToStudentDto());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var studentModel = _context.Students.FirstOrDefault(s => s.StudentId == id);
+
+            if (studentModel == null)
+            {
+                return NotFound();
+            }
+            
+            _context.Students.Remove(studentModel);
+
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
