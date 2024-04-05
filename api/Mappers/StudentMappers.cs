@@ -1,4 +1,5 @@
 using api.Dto;
+using api.Models;
 
 namespace api.Mappers{
     public static class StudentMappers{
