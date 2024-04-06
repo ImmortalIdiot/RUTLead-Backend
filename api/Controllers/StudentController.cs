@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dto;
+using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,16 +11,18 @@ namespace api.Controllers
     public class StudentController : ControllerBase
     {
         private readonly ApiDBContext _context;
+        private readonly IStudentRepository _studentRepo;
 
-        public StudentController(ApiDBContext context)
+        public StudentController(ApiDBContext context, IStudentRepository studentRepo)
         {
+            _studentRepo = studentRepo;
             _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var students = await _context.Students.ToListAsync();
+            var students = await _studentRepo.GetAllSync();
 
             var studentDto = students.Select(s => s.ToStudentDto());
 
