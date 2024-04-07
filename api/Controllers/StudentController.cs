@@ -22,7 +22,7 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var students = await _studentRepo.GetAllSync();
+            var students = await _studentRepo.GetAllAsync();
 
             var studentDto = students.Select(s => s.ToStudentDto());
 
@@ -32,7 +32,7 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _studentRepo.GetByIdAsync(id);
 
             if (student == null)
             {
@@ -46,8 +46,7 @@ namespace api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateStudentRequestDto studentDto)
         {
             var studentModel = studentDto.ToStudentFromCreate();
-            await _context.Students.AddAsync(studentModel);
-            await _context.SaveChangesAsync();
+            await _studentRepo.CreateAsync(studentModel);
             return CreatedAtAction(nameof(GetById), new {id = studentModel.StudentId}, studentModel.ToStudentDto());
         }
 
@@ -55,20 +54,12 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStudentRequestDto updateDto)
         {
-            var studentModel = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == id);
+            var studentModel = await _studentRepo.UpdateAsync(id, updateDto);
 
             if (studentModel == null)
             {
                 return NotFound();
             }
-
-            studentModel.StudentId = updateDto.StudentId;
-            studentModel.FullName = updateDto.FullName;
-            studentModel.Email = updateDto.Email;
-            studentModel.Group = updateDto.Group;
-            studentModel.Password = updateDto.Password;
-
-            await _context.SaveChangesAsync();
 
             return Ok(studentModel.ToStudentDto());
         }
@@ -77,16 +68,12 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var studentModel = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == id);
+            var studentModel = await _studentRepo.DeleteAsync(id);
 
             if (studentModel == null)
             {
                 return NotFound();
             }
-            
-            _context.Students.Remove(studentModel);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
