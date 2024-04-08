@@ -1,3 +1,5 @@
+using api.Models;
+
 namespace api.Dto
 {
     public class CreateStudentRequestDto

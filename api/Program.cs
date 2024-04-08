@@ -1,5 +1,7 @@
 using api.Data;
+using api.Interfaces;
 using api.Models;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDBContext>(options =>
 {

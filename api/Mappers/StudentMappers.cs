@@ -12,5 +12,17 @@ namespace api.Mappers{
                 Group = studentmodel.Group
             };
         }
+
+        public static Student ToStudentFromCreate(this CreateStudentRequestDto studentDto)
+        {
+            return new Student
+            {
+                StudentId = studentDto.StudentId,
+                Email = studentDto.Email,
+                FullName = studentDto.FullName,
+                Password = studentDto.Password,
+                Group = studentDto.Group
+            };
+        }
     }
 }

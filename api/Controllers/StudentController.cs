@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dto;
+using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -38,7 +39,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateStudentRequest studentDto)
+        public IActionResult Create([FromBody] CreateStudentRequestDto studentDto)
         {
             var studentModel = studentDto.ToStudentFromCreate();
             _context.Students.Add(studentModel);
