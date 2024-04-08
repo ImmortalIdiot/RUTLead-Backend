@@ -38,7 +38,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateStudentRequest studentDto)
+        public IActionResult Create([FromBody] CreateStudentRequestDto studentDto)
         {
             var studentModel = studentDto.ToStudentFromCreate();
             _context.Students.Add(studentModel);
