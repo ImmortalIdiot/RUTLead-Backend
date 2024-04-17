@@ -7,3 +7,4 @@ public class StudentDto{
     public required string Password { get; set; }
     public required string Group { get; set; }
 }
+
