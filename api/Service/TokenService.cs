@@ -19,7 +19,7 @@ public class TokenService : ITokenService{
         else{
             throw new InvalidDataException("JWT secret key is missing or empty.");
         }
-        // _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SecretKey"]));
+        
     }
 
     public string CreateToken(AppUser user)
@@ -29,13 +29,9 @@ public class TokenService : ITokenService{
             new Claim(JwtRegisteredClaimNames.NameId, user.StudentId.ToString())
         };
 
-        if (!string.IsNullOrEmpty(user.Email))
+        if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.UserName))
         {
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-        }
-
-        if (!string.IsNullOrEmpty(user.UserName))
-        {
             claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.UserName));
         }
 

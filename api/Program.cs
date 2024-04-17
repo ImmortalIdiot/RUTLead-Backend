@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDBContext>(options =>
+builder.Services.AddDbContext<ApiDBContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
