@@ -3,8 +3,6 @@ using api.Dto;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using api.Mappers;
 
 namespace api.Controllers
 {
