@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(options => {
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
-            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"] ?? "")
+            System.Text.Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY") ?? throw new InvalidDataException("JWT secret key is missing or empty."))
         )
     };
 });
