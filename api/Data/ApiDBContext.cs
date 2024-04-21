@@ -31,8 +31,8 @@ public class ApiDBContext : IdentityDbContext<AppUser>
             },
             new IdentityRole 
             {
-                Name = "GroupLeader",
-                NormalizedName = "GROUPLEADER"
+                Name = "Deanery",
+                NormalizedName = "DEANERY"
             }
         };
         builder.Entity<IdentityRole>().HasData(roles);
