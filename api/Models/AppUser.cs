@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace api.Models{
+namespace api.Models {
     public class AppUser : IdentityUser
     {
         public required int StudentId { get; set; }

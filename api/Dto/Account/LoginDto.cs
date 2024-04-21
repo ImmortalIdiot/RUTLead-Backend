@@ -7,6 +7,7 @@ namespace api.Dto.Account
     {
         [Required]
         public required int StudentId { get; set; }
+        
         [Required]
         public required string Password { get; set; }
     }
