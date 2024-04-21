@@ -25,35 +25,46 @@ namespace api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
+            }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.StudentId.ToString());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
 
-            if(user == null) return Unauthorized("Неверный номер студенческого билета!");
+            if (user == null) return NotFound("Неверный номер студенческого билета!");
 
             var result = await _signManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if(!result.Succeeded) return Unauthorized("Неверное имя пользователя или пароль!");
+            if (!result.Succeeded) return NotFound("Неверное имя пользователя или пароль!");
 
-            return Ok(
-                new NewUserDto
-                {
-                    StudentId = user.StudentId,
-                    Token = _tokenService.CreateToken(user)
-                }
-            );
+            try {
+                return Ok(
+                    new UserDto
+                    {
+                        StudentId = user.StudentId,
+                        Token = _tokenService.CreateToken(user)
+                    }
+                );
+            } catch (Exception e) {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("register")]
-
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid) {
                     return BadRequest(ModelState);
-                
+                }
+
+                var existingStudent = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == registerDto.StudentId.ToString());
+
+                if (existingStudent != null) {
+                    return BadRequest();
+                }
+
                 var appUser = new AppUser
                 {
                     StudentId = registerDto.StudentId,
@@ -64,9 +75,9 @@ namespace api.Controllers
 
                 var createUser = await _userManager.CreateAsync(appUser, registerDto.Password);
 
-                if(createUser.Succeeded)
+                if (createUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Student");
                     if (roleResult.Succeeded)
                     {
                         return Ok(
@@ -82,18 +93,17 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, roleResult.Errors);
+                        return BadRequest(roleResult.Errors);
                     }
                 }
                 else
                 {
-                    return StatusCode(500, createUser.Errors);
+                    return BadRequest(createUser.Errors);
                 }
-            }catch (Exception e)
+            } catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                return BadRequest(e.Message);
             }
         }
     }
 }
-
