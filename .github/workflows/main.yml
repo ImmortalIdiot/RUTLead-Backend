@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - develop
+    - feature/*
+    - bugfix/*
+    - hotfix/*
+    - release/*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore api/RUTLead-Backend.sln
+
+      - name: Build
+        run: dotnet build api/RUTLead-Backend.sln --configuration Release --no-restore
+
+      - name: publish
+        run: dotnet publish api/RUTLead-Backend.sln --configuration Release --no-build
+     
