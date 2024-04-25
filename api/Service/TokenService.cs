@@ -32,24 +32,20 @@ public class TokenService : ITokenService{
             throw new InvalidDataException("Email or UserName is missing or empty.");
         }
 
-        try {
-            var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
-            
-            var tokenDescriptor = new SecurityTokenDescriptor {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = creds,
-                Issuer = _config["JWT:Issuer"],
-                Audience = _config["JWT:Audience"]
-            };
+        var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
+        
+        var tokenDescriptor = new SecurityTokenDescriptor {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddHours(2),
+            SigningCredentials = creds,
+            Issuer = _config["JWT:Issuer"],
+            Audience = _config["JWT:Audience"]
+        };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        
+        var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
-        } catch {
-            throw new Exception("Failed to create token.");
-        }
+        return tokenHandler.WriteToken(token);
     }
 }
