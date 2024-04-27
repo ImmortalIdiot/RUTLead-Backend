@@ -1,9 +1,4 @@
-
-
-using System.Net;
-using System.Text.Json;
 using api.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace api.Middleware
 {
