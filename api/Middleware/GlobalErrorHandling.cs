@@ -21,6 +21,7 @@ namespace api.Middleware
             }
             catch (Exception e)
             {
+                context.Response.StatusCode = (int)ExceptionCodesDictionary.GetExceptionStatusCode(e);
                 await context.Response.WriteAsync(e.Message);
             }
         }
