@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalErrorHandling>();
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
