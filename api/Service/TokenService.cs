@@ -18,16 +18,16 @@ public class TokenService : ITokenService{
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
     }
 
-    public string CreateToken(AppUser user)
+    public string CreateToken(Student user)
     {
         var claims = new List<Claim> {
             new Claim(JwtRegisteredClaimNames.NameId, user.StudentId.ToString())
         };
 
-        if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.UserName))
+        if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.FullName))
         {
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.UserName));
+            claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FullName));
         } else {
             throw new InvalidDataException("Email or UserName is missing or empty.");
         }
