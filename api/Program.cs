@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
@@ -25,15 +26,6 @@ builder.Services.AddDbContext<ApiDBContext>(options =>
 
 
 // Configure the HTTP request pipeline.
-
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
-})
-.AddEntityFrameworkStores<ApiDBContext>();
 
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = 
