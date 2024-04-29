@@ -59,7 +59,7 @@ namespace api.Repository
             existingStudent.FullName = updateStudent.FullName;
             existingStudent.Email = updateStudent.Email;
             existingStudent.Group = updateStudent.Group;
-            existingStudent.Password = updateStudent.Password;
+            existingStudent.PasswordHash = updateStudent.Password;
 
             await _context.SaveChangesAsync();
 

@@ -8,7 +8,7 @@ namespace api.Mappers{
                 StudentId = studentmodel.StudentId,
                 Email = studentmodel.Email,
                 FullName = studentmodel.FullName,
-                Password = studentmodel.Password,
+                Password = studentmodel.PasswordHash,
                 Group = studentmodel.Group
             };
         }
@@ -20,7 +20,7 @@ namespace api.Mappers{
                 StudentId = studentDto.StudentId,
                 Email = studentDto.Email,
                 FullName = studentDto.FullName,
-                Password = studentDto.Password,
+                PasswordHash = studentDto.Password,
                 Group = studentDto.Group
             };
         }
