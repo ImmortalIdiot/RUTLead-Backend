@@ -6,8 +6,8 @@ namespace api.Exceptions
     {
         private static Dictionary<Type, HttpStatusCode> exceptionCodesDictionary = new Dictionary<Type, HttpStatusCode>
         {
-            { typeof(InvalidUserDataException), HttpStatusCode.Unauthorized},
-            { typeof(InvalidJwtDataException), HttpStatusCode.BadRequest}
+            { typeof(InvalidUserDataException), HttpStatusCode.BadRequest},
+            { typeof(InvalidJwtDataException), HttpStatusCode.Unauthorized}
         };
 
         public static HttpStatusCode GetExceptionStatusCode(Exception exception)
