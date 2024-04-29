@@ -1,5 +1,6 @@
 using api.Data;
 using api.Interfaces;
+using api.Middleware;
 using api.Models;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+builder.Services.AddTransient<GlobalErrorHandling>();
 
 builder.Services.AddDbContext<ApiDBContext>(options =>
 {
@@ -55,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalErrorHandling>();
 
 app.UseHttpsRedirection();
 
