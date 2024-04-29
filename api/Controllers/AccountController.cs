@@ -4,6 +4,8 @@ using api.Dto.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using api.Repository;
+using api.Data;
 
 namespace api.Controllers
 {
@@ -11,15 +13,17 @@ namespace api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly ApiDBContext _dbContext;
         private readonly ITokenService _tokenService;
-        private readonly SignInManager<AppUser> _signManager;
+        private readonly IStudentRepository _studentManager;
+        private readonly IPasswordHasher<Student> _passwordHasher;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        public AccountController(ITokenService tokenService, IPasswordHasher<Student> passwordHasher, IStudentRepository studentManager, ApiDBContext dbContext)
         {
-            _userManager = userManager;
             _tokenService = tokenService;
-            _signManager = signInManager;
+            _passwordHasher = passwordHasher;
+            _studentManager = studentManager;
+            _dbContext = dbContext;
         }
 
         [HttpPost("login")]
@@ -29,13 +33,13 @@ namespace api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
+            var user = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
 
             if (user == null) return NotFound("Неверный номер студенческого билета!");
 
-            var result = await _signManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var result  = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-            if (!result.Succeeded) return NotFound("Неверное имя пользователя или пароль!");
+            if (result != PasswordVerificationResult.Success) return NotFound("Неверное имя пользователя или пароль!");
 
             try {
                 return Ok(
@@ -57,49 +61,37 @@ namespace api.Controllers
             {
                 if (!ModelState.IsValid) {
                     return BadRequest(ModelState);
-                }
+                }   
 
-                var existingStudent = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == registerDto.StudentId.ToString());
+                var existingStudent = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == registerDto.StudentId);
 
                 if (existingStudent != null) {
-                    return BadRequest();
+                    return BadRequest("Such a user already exists!");
                 }
 
-                var appUser = new AppUser
+                var passwordHash = _passwordHasher.HashPassword(null!, registerDto.Password);
+
+                var student = new Student
                 {
                     StudentId = registerDto.StudentId,
                     Group = registerDto.Group,
-                    UserName = registerDto.FullName,
-                    Email = registerDto.Email
+                    FullName = registerDto.FullName,
+                    Email = registerDto.Email,
+                    PasswordHash = passwordHash
                 };
 
-                var createUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-
-                if (createUser.Succeeded)
-                {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Student");
-                    if (roleResult.Succeeded)
+                var createUser = await _studentManager.CreateAsync(student);
+                
+                return Ok(
+                    new NewUserDto
                     {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                StudentId = registerDto.StudentId,
-                                Group = registerDto.Group,
-                                FullName = registerDto.FullName,
-                                Email = registerDto.Email,
-                                Token = _tokenService.CreateToken(appUser)
-                            }
-                        );
+                        StudentId = registerDto.StudentId,
+                        Group = registerDto.Group,
+                        FullName = registerDto.FullName,
+                        Email = registerDto.Email,
+                        Token = _tokenService.CreateToken(student)
                     }
-                    else
-                    {
-                        return BadRequest(roleResult.Errors);
-                    }
-                }
-                else
-                {
-                    return BadRequest(createUser.Errors);
-                }
+                );
             } catch (Exception e)
             {
                 return BadRequest(e.Message);
