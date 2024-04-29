@@ -1,15 +1,13 @@
 namespace api.Data;
 using api.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class ApiDBContext : IdentityDbContext<AppUser>
+public class ApiDBContext : DbContext
 {
     public ApiDBContext(DbContextOptions<ApiDBContext> options)
     : base(options)
     {
-
+        
     }
 
     public DbSet<Student> Students { get; set; }
@@ -17,24 +15,5 @@ public class ApiDBContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        List<IdentityRole> roles = new List<IdentityRole> {
-            new IdentityRole 
-            {
-                Name = "Monitor",
-                NormalizedName = "MONITOR"
-            },
-            new IdentityRole 
-            {
-                Name = "Student",
-                NormalizedName = "STUDENT"
-            },
-            new IdentityRole 
-            {
-                Name = "Deanery",
-                NormalizedName = "DEANERY"
-            }
-        };
-        builder.Entity<IdentityRole>().HasData(roles);
     }
 }
