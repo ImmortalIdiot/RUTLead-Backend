@@ -14,7 +14,7 @@ public class TokenService : ITokenService{
     public TokenService(IConfiguration config){
         _config  = config;
 
-        string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+        string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY")!;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
     }
 
