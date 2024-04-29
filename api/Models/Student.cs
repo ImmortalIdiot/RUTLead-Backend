@@ -6,4 +6,5 @@ public class Student {
     public required string FullName { get; set; }
     public required string PasswordHash { get; set; }
     public required string Group { get; set; }
+    public string? Role { get; set; }
 }
