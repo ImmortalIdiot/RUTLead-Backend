@@ -4,7 +4,6 @@ using api.Dto.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api.Repository;
 using api.Data;
 
 namespace api.Controllers
