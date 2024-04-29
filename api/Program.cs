@@ -21,6 +21,34 @@ builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDBContext>(options =
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("AndroidApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6000");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+    options.AddPolicy("IosApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6100");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+    options.AddPolicy("WebApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6200");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,5 +63,9 @@ app.UseMiddleware<GlobalErrorHandling>();
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+app.UseCors("AndroidApp");
+app.UseCors("IosApp");
+app.UseCors("WebApp");
 
 app.Run();
