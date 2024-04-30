@@ -36,9 +36,9 @@ namespace api.Controllers
 
             if (user == null) return NotFound("Invalid student ID number");
 
-            var result  = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+            var isPasswordHashValid = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-            if (result != PasswordVerificationResult.Success) return NotFound("Invalid username or password");
+            if (isPasswordHashValid != PasswordVerificationResult.Success) return NotFound("Invalid username or password");
 
             try {
                 return Ok(
