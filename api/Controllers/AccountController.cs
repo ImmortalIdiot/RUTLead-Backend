@@ -79,7 +79,7 @@ namespace api.Controllers
                     PasswordHash = passwordHash
                 };
 
-                var createUser = await _studentManager.CreateAsync(student);
+                var createdUser = await _studentManager.CreateAsync(student);
                 
                 return Ok(
                     new NewUserDto
