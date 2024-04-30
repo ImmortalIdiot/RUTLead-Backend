@@ -12,10 +12,10 @@ namespace api.Repository
         private readonly ApiDBContext _context;
         private readonly IPasswordHasher<Student> _passwordHasher;
         public StudentRepository(ApiDBContext context, IPasswordHasher<Student> passwordHasher) 
-            {
-                _passwordHasher = passwordHasher;
-                _context = context;
-            }
+        {
+            _passwordHasher = passwordHasher;
+            _context = context;
+        }
 
         public async Task<Student?> CreateAsync(Student studentModel)
         {
