@@ -7,11 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace api.Service;
 
-public class TokenService : ITokenService{
+public class TokenService : ITokenService {
     private readonly IConfiguration _config;
     private readonly SymmetricSecurityKey _key;
 
-    public TokenService(IConfiguration config){
+    public TokenService(IConfiguration config) {
         _config  = config;
 
         string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY")!;
@@ -24,8 +24,7 @@ public class TokenService : ITokenService{
             new Claim(JwtRegisteredClaimNames.NameId, user.StudentId.ToString())
         };
 
-        if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.FullName))
-        {
+        if (!string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.FullName)) {
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FullName));
         } else {
