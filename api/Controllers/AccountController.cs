@@ -70,13 +70,16 @@ namespace api.Controllers
 
                 var passwordHash = _passwordHasher.HashPassword(null!, registerDto.Password);
 
+                string role = "Student";
+
                 var student = new Student
                 {
                     StudentId = registerDto.StudentId,
                     Group = registerDto.Group,
                     FullName = registerDto.FullName,
                     Email = registerDto.Email,
-                    PasswordHash = passwordHash
+                    PasswordHash = passwordHash,
+                    Role = role
                 };
 
                 var createUser = await _studentManager.CreateAsync(student);
