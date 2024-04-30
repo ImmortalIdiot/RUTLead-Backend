@@ -65,7 +65,7 @@ namespace api.Controllers
                 var existingStudent = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == registerDto.StudentId);
 
                 if (existingStudent != null) {
-                    return BadRequest("Such a user already exists!");
+                    return BadRequest("Such a user already exists");
                 }
 
                 var passwordHash = _passwordHasher.HashPassword(null!, registerDto.Password);
