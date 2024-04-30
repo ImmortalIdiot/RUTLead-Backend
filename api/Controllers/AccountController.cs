@@ -4,7 +4,6 @@ using api.Dto.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using api.Repository;
 using api.Data;
 
 namespace api.Controllers
@@ -27,7 +26,7 @@ namespace api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -35,11 +34,11 @@ namespace api.Controllers
 
             var user = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
 
-            if (user == null) return NotFound("Неверный номер студенческого билета!");
+            if (user == null) return NotFound("Invalid student ID number");
 
-            var result  = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+            var isPasswordHashValid = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-            if (result != PasswordVerificationResult.Success) return NotFound("Неверное имя пользователя или пароль!");
+            if (isPasswordHashValid != PasswordVerificationResult.Success) return NotFound("Invalid username or password");
 
             try {
                 return Ok(
@@ -66,7 +65,7 @@ namespace api.Controllers
                 var existingStudent = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == registerDto.StudentId);
 
                 if (existingStudent != null) {
-                    return BadRequest("Such a user already exists!");
+                    return BadRequest("Such a user already exists");
                 }
 
                 var passwordHash = _passwordHasher.HashPassword(null!, registerDto.Password);

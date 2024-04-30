@@ -51,6 +51,34 @@ builder.Services.AddAuthentication(options => {
 });
 
 
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("AndroidApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6000");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+    options.AddPolicy("IosApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6100");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+    options.AddPolicy("WebApp", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:6200");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -67,5 +95,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AndroidApp");
+app.UseCors("IosApp");
+app.UseCors("WebApp");
 
 app.Run();

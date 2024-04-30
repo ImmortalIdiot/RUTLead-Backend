@@ -2,6 +2,7 @@ using api.Data;
 using api.Dto;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -9,10 +10,12 @@ namespace api.Repository
     public class StudentRepository : IStudentRepository
     {
         private readonly ApiDBContext _context;
-        public StudentRepository(ApiDBContext context) 
-            {
-                _context = context;
-            }
+        private readonly IPasswordHasher<Student> _passwordHasher;
+        public StudentRepository(ApiDBContext context, IPasswordHasher<Student> passwordHasher) 
+        {
+            _passwordHasher = passwordHasher;
+            _context = context;
+        }
 
         public async Task<Student?> CreateAsync(Student studentModel)
         {
@@ -59,7 +62,7 @@ namespace api.Repository
             existingStudent.FullName = updateStudent.FullName;
             existingStudent.Email = updateStudent.Email;
             existingStudent.Group = updateStudent.Group;
-            existingStudent.PasswordHash = updateStudent.Password;
+            existingStudent.PasswordHash = _passwordHasher.HashPassword(null!, updateStudent.Password);
 
             await _context.SaveChangesAsync();
 
