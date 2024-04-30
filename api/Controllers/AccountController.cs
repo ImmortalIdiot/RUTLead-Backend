@@ -26,7 +26,7 @@ namespace api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -34,11 +34,11 @@ namespace api.Controllers
 
             var user = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
 
-            if (user == null) return NotFound("Неверный номер студенческого билета!");
+            if (user == null) return NotFound("Invalid student ID number");
 
             var result  = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-            if (result != PasswordVerificationResult.Success) return NotFound("Неверное имя пользователя или пароль!");
+            if (result != PasswordVerificationResult.Success) return NotFound("Invalid username or password");
 
             try {
                 return Ok(
