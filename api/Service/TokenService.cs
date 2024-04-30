@@ -4,6 +4,7 @@ using System.Text;
 using api.Interfaces;
 using api.Models;
 using Microsoft.IdentityModel.Tokens;
+using api.Exceptions;
 
 namespace api.Service;
 
@@ -13,7 +14,7 @@ public class TokenService : ITokenService {
 
     public TokenService(IConfiguration config) {
         _config  = config;
-
+        
         string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY")!;
         _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
     }
@@ -28,23 +29,28 @@ public class TokenService : ITokenService {
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.Add(new Claim(JwtRegisteredClaimNames.GivenName, user.FullName));
         } else {
-            throw new InvalidDataException("Email or UserName is missing or empty.");
+            throw new InvalidUserDataException("Email or UserName is missing or empty.");
         }
 
-        var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
-        
-        var tokenDescriptor = new SecurityTokenDescriptor {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(2),
-            SigningCredentials = creds,
-            Issuer = _config["JWT:Issuer"],
-            Audience = _config["JWT:Audience"]
-        };
+        try
+        {
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(2),
+                SigningCredentials = creds,
+                Issuer = _config["JWT:Issuer"],
+                Audience = _config["JWT:Audience"]
+            };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return tokenHandler.WriteToken(token);
+            return tokenHandler.WriteToken(token);
+        } catch {
+            throw new InvalidJwtDataException("Token creation error");
+        }
     }
 }
