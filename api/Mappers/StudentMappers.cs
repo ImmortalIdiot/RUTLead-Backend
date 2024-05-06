@@ -3,12 +3,14 @@ using api.Models;
 
 namespace api.Mappers{
     public static class StudentMappers{
-        public static StudentDto ToStudentDto(this Student studentmodel){
-            return new StudentDto{
+        public static StudentDto ToStudentDto(this Student studentmodel) 
+        {
+            return new StudentDto 
+            {
                 StudentId = studentmodel.StudentId,
                 Email = studentmodel.Email,
                 FullName = studentmodel.FullName,
-                Password = studentmodel.Password,
+                Password = studentmodel.PasswordHash,
                 Group = studentmodel.Group
             };
         }
@@ -20,7 +22,7 @@ namespace api.Mappers{
                 StudentId = studentDto.StudentId,
                 Email = studentDto.Email,
                 FullName = studentDto.FullName,
-                Password = studentDto.Password,
+                PasswordHash = studentDto.Password,
                 Group = studentDto.Group
             };
         }

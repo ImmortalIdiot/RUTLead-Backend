@@ -6,8 +6,6 @@ namespace api.Configuration
 {
     public class StudentConfiguration : IEntityTypeConfiguration<Student>
     {
-
-
         public void Configure(EntityTypeBuilder<Student> builder)
         {
             builder.HasKey(x => x.StudentId);
@@ -18,7 +16,7 @@ namespace api.Configuration
             builder.Property(s => s.FullName)
                 .IsRequired();
 
-            builder.Property(s => s.Password)
+            builder.Property(s => s.PasswordHash)
                 .IsRequired();
                 
             builder.Property(s => s.Group)

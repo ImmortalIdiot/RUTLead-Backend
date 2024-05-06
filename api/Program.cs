@@ -1,8 +1,13 @@
 using api.Data;
 using api.Interfaces;
 using api.Middleware;
-using api.Repository;
+using api.Models;
+using api.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using api.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +16,40 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
 builder.Services.AddTransient<GlobalErrorHandling>();
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<ApiDBContext>(options =>
+builder.Services.AddDbContext<ApiDBContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+// Configure the HTTP request pipeline.
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = 
+    options.DefaultChallengeScheme = 
+    options.DefaultForbidScheme = 
+    options.DefaultScheme =
+    options.DefaultSignInScheme = 
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters{
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY") ?? throw new InvalidDataException("JWT secret key is missing or empty."))
+        )
+    };
+});
+
 
 builder.Services.AddCors(options => 
 {
@@ -51,7 +81,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -61,6 +90,9 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<GlobalErrorHandling>();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
