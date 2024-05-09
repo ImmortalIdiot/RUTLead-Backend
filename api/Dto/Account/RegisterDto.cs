@@ -12,13 +12,13 @@ namespace api.Dto.Account
         [EmailAddress]
         public required string Email { get; set; }
 
-        [Required]
+        [Required, RegularExpression(@"^[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+){2}$", ErrorMessage = "Invalid username")]
         public required string FullName { get; set; }
 
         [Required]
         public required string Password { get; set; }
 
-        [Required]
+        [Required, RegularExpression(@"^[А-ЯЁ]{3}[а-яё]{0,2}-\d{3}$", ErrorMessage = "Invalid user group")]
         public required string Group { get; set; }
     }
 }
