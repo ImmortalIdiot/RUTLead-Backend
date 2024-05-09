@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using api.DataAnnotations;
 
 namespace api.Dto.Account
 {
     public class RegisterDto
     {
-        [Required]
+        [Required, StudentIdValidation]
         public int StudentId { get; set; }
         
         [Required]
