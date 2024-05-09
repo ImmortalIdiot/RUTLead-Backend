@@ -15,7 +15,7 @@ namespace api.Dto.Account
         [Required, RegularExpression(@"^[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+){2}$", ErrorMessage = "Invalid username")]
         public required string FullName { get; set; }
 
-        [Required]
+        [Required, PasswordValidation]
         public required string Password { get; set; }
 
         [Required, RegularExpression(@"^[А-ЯЁ]{3}[а-яё]{0,2}-\d{3}$", ErrorMessage = "Invalid user group")]
