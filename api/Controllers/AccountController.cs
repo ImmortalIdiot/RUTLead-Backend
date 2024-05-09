@@ -12,7 +12,6 @@ namespace api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private static readonly string DEFAULT_ROLE = "Student";
         private readonly ApiDBContext _dbContext;
         private readonly ITokenService _tokenService;
         private readonly IStudentRepository _studentManager;
@@ -78,7 +77,7 @@ namespace api.Controllers
                     FullName = registerDto.FullName,
                     Email = registerDto.Email,
                     PasswordHash = passwordHash,
-                    Role = DEFAULT_ROLE
+                    Role = Roles.Student
                 };
 
                 var createdUser = await _studentManager.CreateAsync(student);
