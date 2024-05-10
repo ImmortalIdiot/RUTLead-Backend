@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dto;
+using api.Helpers;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
@@ -39,9 +40,20 @@ namespace api.Repository
             return studentModel;
         }
 
-        public async Task<List<Student>> GetAllAsync()
+        public async Task<List<Student>> GetAllAsync(QueryObject queryObject)
         {
-            return await _context.Students.ToListAsync();
+            var students = _context.Students.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryObject.FullName))
+            {
+                students = students.Where(s => s.FullName.Contains(queryObject.FullName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.Group))
+            {
+                students = students.Where(s => s.Group.Contains(queryObject.Group));
+            }
+            return await students.ToListAsync();
         }
 
         public async Task<Student?> GetByIdAsync(int id)
