@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Data;
+using api.Enums;
 
 namespace api.Controllers
 {
@@ -76,7 +77,8 @@ namespace api.Controllers
                     Group = registerDto.Group,
                     FullName = registerDto.FullName,
                     Email = registerDto.Email,
-                    PasswordHash = passwordHash
+                    PasswordHash = passwordHash,
+                    Role = Roles.Student
                 };
 
                 var createdUser = await _studentManager.CreateAsync(student);
