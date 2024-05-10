@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dto;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
         {
-            var students = await _studentRepo.GetAllAsync();
+            var students = await _studentRepo.GetAllAsync(queryObject);
 
             var studentDto = students.Select(s => s.ToStudentDto());
 
