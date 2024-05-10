@@ -1,14 +1,14 @@
-using System.ComponentModel;
+using api.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Dto.Account
 {
     public class LoginDto
     {
-        [Required]
+        [Required, StudentIdValidation]
         public required int StudentId { get; set; }
-        
-        [Required]
+
+        [Required, PasswordValidation]
         public required string Password { get; set; }
     }
 }
