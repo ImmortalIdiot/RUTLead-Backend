@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace api.DataAnnotations {
+namespace api.DataAnnotations 
+{
     public class PasswordValidation : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? password, ValidationContext validationContext)
