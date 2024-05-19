@@ -35,11 +35,11 @@ namespace api.Controllers
 
             var user = await _dbContext.Students.FirstOrDefaultAsync(x => x.StudentId == loginDto.StudentId);
 
-            if (user == null) return NotFound("Invalid student ID number");
+            if (user == null) return NotFound("Incorrect student ID number");
 
             var isPasswordHashValid = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 
-            if (isPasswordHashValid != PasswordVerificationResult.Success) return NotFound("Invalid username or password");
+            if (isPasswordHashValid != PasswordVerificationResult.Success) return NotFound("Incorrect username or password");
 
             try {
                 return Ok(
