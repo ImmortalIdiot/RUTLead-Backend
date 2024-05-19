@@ -12,7 +12,7 @@ namespace api.Dto.Account
         [EmailAddress]
         public required string Email { get; set; }
 
-        [Required, RegularExpression(@"^[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+){2}$", ErrorMessage = "Incorrect username")]
+        [Required, RegularExpression(@"^[А-ЯЁ][а-яё]+(?:\s[А-ЯЁ][а-яё]+){2}(?:\s[а-яё]+)?$", ErrorMessage = "Incorrect username")]
         public required string FullName { get; set; }
 
         [Required, PasswordValidation]
